@@ -1,4 +1,4 @@
-module github.com/av-ugolkov/proj-gen
+module github.com/av-ugolkov/pro-gen
 
 go 1.24.0
 
