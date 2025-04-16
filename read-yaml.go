@@ -1,11 +1,8 @@
 package main
 
 import (
+	"errors"
 	"os"
-	"path"
-	"path/filepath"
-
-	"github.com/av-ugolkov/gopkg/logger"
 
 	"gopkg.in/yaml.v3"
 )
@@ -16,47 +13,27 @@ func generateStructure(pathFile string, instance any) error {
 		return err
 	}
 
-	var projectMap map[string]any
-	err = yaml.Unmarshal(f, &projectMap)
+	var mapConfig map[string]any
+	err = yaml.Unmarshal(f, &mapConfig)
 	if err != nil {
 		return err
 	}
 
-	// Create the folder structure
-	for key, value := range projectMap {
-		// Create the top-level folder
-		err = os.Mkdir(key, 0755)
-		if err != nil && !os.IsExist(err) {
-			return err
-		}
-
-		// Recursively create subfolders
-		createSubfolders(key, value)
+	switch mapConfig["ver"].(int) {
+	case 1:
+		projectMap := make(map[string]any, len(mapConfig)-1)
+		copyMap(mapConfig, projectMap)
+		return genFolders(projectMap)
+	default:
+		return errors.New("unknown version")
 	}
-
-	return nil
 }
 
-func createSubfolders(parent string, value any) {
-	if valueMap, ok := value.(map[string]any); ok {
-		for key, subValue := range valueMap {
-			if filepath.Ext(key) != "" {
-				f, err := os.Create(path.Join(parent, key))
-				if err != nil {
-					logger.Errorf("%v", err)
-				}
-				_, err = f.WriteString(subValue.(string))
-				if err != nil {
-					logger.Errorf("%v", err)
-				}
-			} else {
-				err := os.Mkdir(path.Join(parent, key), 0755)
-				if err != nil && !os.IsExist(err) {
-					logger.Errorf("%v", err)
-				}
-
-				createSubfolders(path.Join(parent, key), subValue)
-			}
+func copyMap(map1 map[string]any, map2 map[string]any) {
+	for key, value := range map1 {
+		if key == "ver" {
+			continue
 		}
+		map2[key] = value
 	}
 }

@@ -1,3 +1,4 @@
+ver: 1
 my-project:
   go.mod: |
     module my-project
