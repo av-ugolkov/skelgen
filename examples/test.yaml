@@ -25,3 +25,7 @@ my-project:
         func NewTools() *Tools {
           return nil
         }
+frontend:
+  ^exec:
+    - "npm create vite@latest . -- --template react-ts"
+    - "npm install"
