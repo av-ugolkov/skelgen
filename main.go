@@ -19,7 +19,7 @@ func main() {
 	}
 
 	var inst map[any]any
-	err := generateStructure(path, inst)
+	err := generateSkeleton(path, inst)
 	if err != nil {
 		logger.Errorf("%v", err)
 		os.Exit(1)

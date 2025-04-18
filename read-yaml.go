@@ -7,7 +7,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func generateStructure(pathFile string, instance any) error {
+func generateSkeleton(pathFile string, instance any) error {
 	f, err := os.ReadFile(pathFile)
 	if err != nil {
 		return err

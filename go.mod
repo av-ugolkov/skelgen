@@ -1,4 +1,4 @@
-module github.com/av-ugolkov/pro-gen
+module github.com/av-ugolkov/skelgen
 
 go 1.24.0
 

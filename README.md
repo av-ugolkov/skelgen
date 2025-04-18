@@ -1,1 +1,1 @@
-# pro-gen
+# skelgen (Skeleton generator)
