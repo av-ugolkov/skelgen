@@ -1,5 +1,5 @@
 ver: 1
-my-project:
+backend:
   go.mod: |
     module my-project
     
@@ -27,7 +27,3 @@ my-project:
         func NewTools() *Tools {
           return nil
         }
-frontend:
-  exec:
-    - "npm create vite@latest . -- --template react-ts"
-    - "npm install"
