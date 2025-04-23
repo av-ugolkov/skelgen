@@ -1,4 +1,4 @@
-module github.com/av-ugolkov/skelgen
+module github.com/av-ugolkov/yask
 
 go 1.24.0
 

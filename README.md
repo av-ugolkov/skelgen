@@ -1,1 +1,1 @@
-# skelgen (Skeleton generator)
+# yask (YAML Skeleton)
