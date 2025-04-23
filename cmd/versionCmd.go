@@ -7,9 +7,7 @@ import (
 )
 
 var (
-	Version   = "dev"
-	Commit    = "none"
-	BuildDate = "unknown"
+	Version = "v0.0.1"
 )
 
 var versionCmd = &cobra.Command{
@@ -17,9 +15,7 @@ var versionCmd = &cobra.Command{
 	Short: "Print the version number of yask",
 	Long:  `All software has versions. This is yask's`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("yask:", Version)
-		fmt.Println("yask commit:", Commit)
-		fmt.Println("yask build date:", BuildDate)
+		fmt.Println(Version)
 	},
 }
 

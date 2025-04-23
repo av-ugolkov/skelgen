@@ -1,23 +1,8 @@
 BINARY := yask
+PKG:= github.com/av-ugolkov/yask/cmd
 
-VERSION := $(shell git describe --tags)
-COMMIT := $(shell git rev-parse HEAD)
-DATE := $(shell date -u +%Y-%m-%dT%H:%M:%SZ)
+VERSION := $(shell git describe --tags --abbrev=0)
 
-.PHONY: build-dev
-build-dev:
-	go build -ldflags \
-	"-X 'main.Commit=$(COMMIT)' -X 'main.BuildDate=$(DATE)'"\
-	 -o $(BINARY) main.go
-
-.PHONY: build-prod
-build-prod:
-	go build -ldflags \
-	"-X 'main.Version=$(VERSION)' -X 'main.Commit=$(COMMIT)' -X 'main.BuildDate=$(DATE)'"\
-	 -o $(BINARY) main.go
-
-.PHONY: print
-print:
-	@echo "Version:    $(VERSION)"
-	@echo "Commit:     $(COMMIT)"
-	@echo "BuildDate:  $(DATE)"
+.PHONY: build
+build:
+	go build -ldflags "-X '$(PKG).Version=$(VERSION)'" -o $(BINARY) main.go
