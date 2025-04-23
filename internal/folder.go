@@ -1,19 +1,19 @@
-package main
+package internal
 
 import (
 	"os"
 	"path"
-	"path/filepath"
 	"strings"
 
 	"github.com/av-ugolkov/gopkg/logger"
+	"github.com/av-ugolkov/yask/internal/exec"
 )
 
 func genFolders(projectMap map[string]any) error {
 	for key, value := range projectMap {
 		switch key {
 		case "^exec":
-			return runCmdInRootDir(value.(string))
+			return exec.Run(value.(string))
 		default:
 			err := os.Mkdir(key, 0755)
 			if err != nil && !os.IsExist(err) {
@@ -34,13 +34,14 @@ func createSubfolders(parent string, value any) {
 				cmds := subValue.([]any)
 				for _, cmd := range cmds {
 					c := strings.Split(cmd.(string), " ")
-					err := runCmd(parent, c[0], c[1:]...)
+					err := exec.RunInDir(parent, c[0], c[1:]...)
 					if err != nil {
 						logger.Errorf("%v", err)
 					}
 				}
 			default:
-				if filepath.Ext(key) != "" {
+				switch subValue.(type) {
+				case string:
 					f, err := os.Create(path.Join(parent, key))
 					if err != nil {
 						logger.Errorf("%v", err)
@@ -49,7 +50,7 @@ func createSubfolders(parent string, value any) {
 					if err != nil {
 						logger.Errorf("%v", err)
 					}
-				} else {
+				default:
 					err := os.Mkdir(path.Join(parent, key), 0755)
 					if err != nil && !os.IsExist(err) {
 						logger.Errorf("%v", err)

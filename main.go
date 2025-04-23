@@ -1,27 +1,7 @@
 package main
 
-import (
-	"flag"
-	"os"
-
-	"github.com/av-ugolkov/gopkg/logger"
-)
+import "github.com/av-ugolkov/yask/cmd"
 
 func main() {
-	var path string
-	flag.StringVar(&path, "path", "", "path to the file")
-
-	flag.Parse()
-
-	if path == "" {
-		logger.Errorf("path is required")
-		os.Exit(1)
-	}
-
-	var inst map[any]any
-	err := generateSkeleton(path, inst)
-	if err != nil {
-		logger.Errorf("%v", err)
-		os.Exit(1)
-	}
+	cmd.Execute()
 }

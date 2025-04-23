@@ -1,4 +1,4 @@
-package main
+package internal
 
 import (
 	"errors"
@@ -7,7 +7,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-func generateSkeleton(pathFile string, instance any) error {
+func GenSkeleton(pathFile string, instance any) error {
 	f, err := os.ReadFile(pathFile)
 	if err != nil {
 		return err
