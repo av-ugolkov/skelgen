@@ -3,7 +3,9 @@ package internal
 import (
 	"errors"
 	"os"
+	"path"
 
+	"github.com/av-ugolkov/gopkg/logger"
 	"gopkg.in/yaml.v3"
 )
 
@@ -19,21 +21,32 @@ func GenSkeleton(pathFile string, instance any) error {
 		return err
 	}
 
-	switch mapConfig["ver"].(int) {
-	case 1:
-		projectMap := make(map[string]any, len(mapConfig)-1)
-		copyMap(mapConfig, projectMap)
-		return genFolders(projectMap)
-	default:
-		return errors.New("unknown version")
-	}
+	return startGenerate(mapConfig, ".")
 }
 
-func copyMap(map1 map[string]any, map2 map[string]any) {
-	for key, value := range map1 {
-		if key == "ver" {
-			continue
+func startGenerate(conf map[string]any, rootPath string) error {
+	var listErrors error
+
+	for k, v := range conf {
+		switch v.(type) {
+		case map[string]any:
+			err := createFolder(rootPath, k)
+			if err != nil {
+				listErrors = errors.Join(listErrors, err)
+			}
+			err = startGenerate(v.(map[string]any), path.Join(rootPath, k))
+			if err != nil {
+				listErrors = errors.Join(listErrors, err)
+			}
+		case string:
+			err := createFile(rootPath, k, v.(string))
+			if err != nil {
+				listErrors = errors.Join(listErrors, err)
+			}
+		default:
+			logger.Warnf("unknow command - [%s]: %v", k, v)
 		}
-		map2[key] = value
 	}
+
+	return listErrors
 }
