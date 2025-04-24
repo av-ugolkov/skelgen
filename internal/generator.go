@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/av-ugolkov/gopkg/logger"
+	"github.com/av-ugolkov/yask/internal/actions"
 	"gopkg.in/yaml.v3"
 )
 
@@ -38,14 +39,14 @@ func startGenerate(conf map[string]any, rootPath string) error {
 			commands := v.([]any)
 			for _, command := range commands {
 				cmd := strings.Split(command.(string), " ")
-				runInDir(rootPath, cmd[0], cmd[1:]...)
+				actions.ExecCmdInDir(rootPath, cmd[0], cmd[1:]...)
 			}
 		case string(Link):
 			logger.Infof("link file: not implemented yet")
 		default:
 			switch v.(type) {
 			case map[string]any:
-				err := createFolder(rootPath, k)
+				err := actions.CreateFolder(rootPath, k)
 				if err != nil {
 					listErrors = errors.Join(listErrors, err)
 				}
@@ -54,7 +55,7 @@ func startGenerate(conf map[string]any, rootPath string) error {
 					listErrors = errors.Join(listErrors, err)
 				}
 			case string:
-				err := createFile(rootPath, k, v.(string))
+				err := actions.CreateFile(rootPath, k, v.(string))
 				if err != nil {
 					listErrors = errors.Join(listErrors, err)
 				}

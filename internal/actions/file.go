@@ -1,11 +1,11 @@
-package internal
+package actions
 
 import (
 	"os"
 	"path"
 )
 
-func createFile(rootPath, file string, value string) error {
+func CreateFile(rootPath, file string, value string) error {
 	f, err := os.Create(path.Join(rootPath, file))
 	if err != nil {
 		return err
