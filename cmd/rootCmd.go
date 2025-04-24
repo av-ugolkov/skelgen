@@ -1,7 +1,8 @@
 package cmd
 
 import (
-	"os"
+	"fmt"
+	"time"
 
 	"github.com/av-ugolkov/gopkg/logger"
 	"github.com/av-ugolkov/yask/internal"
@@ -19,15 +20,17 @@ var rootCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		if configPath == "" {
-			logger.Errorf("path is required")
-			os.Exit(1)
+			fmt.Printf("ERROR: path is required\n")
 		}
 
+		startTime := time.Now()
+		defer func() {
+			fmt.Printf("executed time: %v\n", time.Now().Sub(startTime))
+		}()
 		var inst map[any]any
 		err := internal.GenSkeleton(configPath, inst)
 		if err != nil {
-			logger.Errorf("%v", err)
-			os.Exit(1)
+			fmt.Printf("ERRORS:\n%v\n\n", err)
 		}
 	},
 }
