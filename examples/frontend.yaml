@@ -1,4 +1,3 @@
-ver: 1
 frontend:
   exec:
     - "npm create vite@latest . -- --template react-ts"
