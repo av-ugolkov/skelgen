@@ -29,6 +29,9 @@ skel:
           }
     Makefile: '$./Makefile'
     README.md: '#/content/readme'
+    exec:
+      - go mod tidy
+      - go get github.com/av-ugolkov/yask
 content:
   readme: |
     # yask (YAML Skeleton)
