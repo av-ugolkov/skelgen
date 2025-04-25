@@ -32,10 +32,6 @@ func startGenerate(conf map[string]any, rootPath string) chan error {
 
 	for k, v := range conf {
 		switch k {
-		case string(kw.Dirs):
-			logger.Infof("create dirs: not implemented yet")
-		case string(kw.Files):
-			logger.Infof("create files: not implemented yet")
 		case string(kw.Exec):
 			wg.Add(1)
 			safe.Go(func() {
@@ -51,8 +47,6 @@ func startGenerate(conf map[string]any, rootPath string) chan error {
 				}
 
 			})
-		case string(kw.Link):
-			logger.Infof("link file: not implemented yet")
 		default:
 			switch v.(type) {
 			case map[string]any:
