@@ -4,7 +4,6 @@ import (
 	"errors"
 	"os"
 	"path"
-	"strings"
 	"sync"
 
 	"github.com/av-ugolkov/gopkg/logger"
@@ -51,8 +50,7 @@ func startGenerate(conf map[string]any, rootPath string) chan error {
 
 				commands := v.([]any)
 				for _, command := range commands {
-					cmd := strings.Split(command.(string), " ")
-					err := actions.ExecCmdInDir(rootPath, cmd[0], cmd[1:]...)
+					err := actions.ExecCmdInDir(rootPath, command.(string))
 					if err != nil {
 						chErr <- err
 						return
