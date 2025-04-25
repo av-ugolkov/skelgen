@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
+
+	"github.com/av-ugolkov/yask/internal/config"
 )
 
 func CreateFile(rootPath, file string, value string) error {
@@ -11,9 +14,35 @@ func CreateFile(rootPath, file string, value string) error {
 	if err != nil {
 		return fmt.Errorf("couldn't create a file [%s] in the folder [%s]: %v", file, rootPath, err)
 	}
-	_, err = f.WriteString(value)
+
+	switch {
+	case strings.HasPrefix(value, "$"):
+		content, err := os.ReadFile(value[1:])
+		if err != nil {
+			return err
+		}
+		return writeBytes(f, content)
+	case strings.HasPrefix(value, "#"):
+		content := config.GetContent(value)
+		return writeString(f, content)
+	default:
+		return writeString(f, value)
+	}
+}
+
+func writeString(file *os.File, content string) error {
+	_, err := file.WriteString(content)
 	if err != nil {
-		return fmt.Errorf("couldn't write the data in the file [%s/%s]: %v", rootPath, file, err)
+		return fmt.Errorf("couldn't write the data in the file [%s]: %v", file.Name(), err)
+	}
+
+	return nil
+}
+
+func writeBytes(file *os.File, content []byte) error {
+	_, err := file.Write(content)
+	if err != nil {
+		return fmt.Errorf("couldn't write the data in the file [%s]: %v", file.Name(), err)
 	}
 
 	return nil

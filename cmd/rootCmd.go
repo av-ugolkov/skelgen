@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/av-ugolkov/gopkg/logger"
-	"github.com/av-ugolkov/yask/internal"
+	"github.com/av-ugolkov/yask/internal/generator"
 
 	"github.com/spf13/cobra"
 )
@@ -28,7 +28,7 @@ var rootCmd = &cobra.Command{
 			fmt.Printf("executed time: %v\n", time.Now().Sub(startTime))
 		}()
 		var inst map[any]any
-		err := internal.GenSkeleton(configPath, inst)
+		err := generator.GenSkeleton(configPath, inst)
 		if err != nil {
 			fmt.Printf("ERRORS:\n%v\n\n", err)
 		}

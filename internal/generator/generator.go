@@ -1,32 +1,25 @@
-package internal
+package generator
 
 import (
 	"errors"
-	"os"
 	"path"
 	"sync"
 
 	"github.com/av-ugolkov/gopkg/logger"
 	"github.com/av-ugolkov/gopkg/safe"
 	"github.com/av-ugolkov/yask/internal/actions"
-
-	"gopkg.in/yaml.v3"
+	"github.com/av-ugolkov/yask/internal/config"
+	kw "github.com/av-ugolkov/yask/internal/key-words"
 )
 
 func GenSkeleton(pathFile string, instance any) error {
-	f, err := os.ReadFile(pathFile)
-	if err != nil {
-		return err
-	}
-
-	var mapConfig map[string]any
-	err = yaml.Unmarshal(f, &mapConfig)
+	err := config.Load(pathFile)
 	if err != nil {
 		return err
 	}
 
 	var listOfErrors error
-	chErr := startGenerate(mapConfig, ".")
+	chErr := startGenerate(config.Skel(), ".")
 	for err := range chErr {
 		listOfErrors = errors.Join(listOfErrors, err)
 	}
@@ -39,11 +32,11 @@ func startGenerate(conf map[string]any, rootPath string) chan error {
 
 	for k, v := range conf {
 		switch k {
-		case string(Dirs):
+		case string(kw.Dirs):
 			logger.Infof("create dirs: not implemented yet")
-		case string(Files):
+		case string(kw.Files):
 			logger.Infof("create files: not implemented yet")
-		case string(Exec):
+		case string(kw.Exec):
 			wg.Add(1)
 			safe.Go(func() {
 				defer wg.Done()
@@ -58,7 +51,7 @@ func startGenerate(conf map[string]any, rootPath string) chan error {
 				}
 
 			})
-		case string(Link):
+		case string(kw.Link):
 			logger.Infof("link file: not implemented yet")
 		default:
 			switch v.(type) {

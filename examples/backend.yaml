@@ -1,28 +1,36 @@
-backend:
-  go.mod: |
-    module my-project
-    
-    go 1.24.0
-  cmd: 
-    main.go: package main
-  internal:
-    app: 
-      init.go: package app
-    database:
-      mongo: 
-        mongo.go: "package mongo"
-    service:
-      service.go: "package service"
-      entity.go: "package service"
-    handler: 
-      handler.go: "package handler"
-  pkg:
-    tools:
-      tools.go: |
-        package tools
+skel:
+  backend:
+    go.mod: |
+      module my-project
+      
+      go 1.24.0
+    cmd: 
+      main.go: package main
+    internal:
+      app: 
+        init.go: package app
+      database:
+        mongo: 
+          mongo.go: "package mongo"
+      service:
+        service.go: "package service"
+        entity.go: "package service"
+      handler: 
+        handler.go: "package handler"
+    pkg:
+      tools:
+        tools.go: |
+          package tools
+  
+          type Tools struct{}
+          
+          func NewTools() *Tools {
+            return nil
+          }
+    Makefile: '$./Makefile'
+    README.md: '#/content/readme'
+content:
+  readme: |
+    # yask (YAML Skeleton)
 
-        type Tools struct{}
-        
-        func NewTools() *Tools {
-          return nil
-        }
+    This tool can generate structure
