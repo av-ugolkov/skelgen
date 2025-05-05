@@ -30,8 +30,12 @@ func Load(path string) error {
 	}
 
 	inst = config{
-		skel:    mapConfig[string(kw.Skel)].(map[string]any),
-		content: mapConfig[string(kw.Content)].(map[string]any),
+		skel: mapConfig[string(kw.Skel)].(map[string]any),
+	}
+
+	mapContent := mapConfig[string(kw.Content)]
+	if mapContent != nil {
+		inst.content = mapContent.(map[string]any)
 	}
 
 	return nil
