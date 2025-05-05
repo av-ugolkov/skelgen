@@ -1,4 +1,4 @@
-name: Cross-compile Go project
+name: Linux Build
 
 on:
   push:
@@ -29,16 +29,8 @@ jobs:
         run: |
           GOOS=linux GOARCH=amd64 go build -o build/yask
 
-      - name: Cross-compile for Windows
-        run: |
-          GOOS=windows GOARCH=amd64 go build -o build/yask.exe
-
-      - name: Cross-compile for macOS
-        run: |
-          GOOS=darwin GOARCH=amd64 go build -o build/yask
-
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: cross-compiled-binaries
+          name: linux-amd64-binaries
           path: build/
