@@ -1,0 +1,44 @@
+name: Cross-compile Go project
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  cross-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        go-version: [1.24]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: ${{ matrix.go-version }}
+
+      - name: Create output directory
+        run: mkdir -p build
+
+      - name: Cross-compile for Linux
+        run: |
+          GOOS=linux GOARCH=amd64 go build -o build/yask
+
+      - name: Cross-compile for Windows
+        run: |
+          GOOS=windows GOARCH=amd64 go build -o build/yask.exe
+
+      - name: Cross-compile for macOS
+        run: |
+          GOOS=darwin GOARCH=amd64 go build -o build/yask
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: cross-compiled-binaries
+          path: build/
