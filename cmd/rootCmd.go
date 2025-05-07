@@ -27,10 +27,6 @@ var rootCmd = &cobra.Command{
 			return
 		}
 
-		startTime := time.Now()
-		defer func() {
-			fmt.Printf("executed time: %v\n", time.Now().Sub(startTime))
-		}()
 		var inst map[any]any
 		err := generator.GenSkeleton(configPath, inst)
 		if err != nil {
@@ -40,6 +36,10 @@ var rootCmd = &cobra.Command{
 }
 
 func Execute() {
+	startTime := time.Now()
+	defer func() {
+		fmt.Printf("time: %v\n", time.Since(startTime))
+	}()
 	rootCmd.Flags().StringVarP(&configPath, "config", "c", "", "Path to config YAML(required)")
 	err := rootCmd.Execute()
 	if err != nil {
