@@ -20,7 +20,11 @@ var rootCmd = &cobra.Command{
 	},
 	Run: func(cmd *cobra.Command, args []string) {
 		if configPath == "" {
-			fmt.Printf("ERROR: path is required\n")
+			err := cmd.Help()
+			if err != nil {
+				logger.Errorf("%v", err)
+			}
+			return
 		}
 
 		startTime := time.Now()
