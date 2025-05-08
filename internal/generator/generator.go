@@ -48,18 +48,16 @@ func startGenerate(conf map[string]any, rootPath string) chan error {
 
 			})
 		case string(kw.Dirs):
-			dirs := make([]string, 0, len(v.([]any)))
 			for _, d := range v.([]any) {
-				dirs = append(dirs, d.(string))
-			}
-			err := actions.CreateFolders(rootPath, dirs...)
-			if err != nil {
-				chErr <- err
+				err := actions.CreateFolders(rootPath, d.(string))
+				if err != nil {
+					chErr <- err
+				}
 			}
 		default:
 			switch v.(type) {
 			case map[string]any:
-				err := actions.CreateFolder(rootPath, k)
+				err := actions.CreateFolders(rootPath, k)
 				if err != nil {
 					chErr <- err
 					continue
