@@ -54,6 +54,26 @@ func startGenerate(conf map[string]any, rootPath string) chan error {
 					chErr <- err
 				}
 			}
+		case string(kw.Files):
+			data := v.([]any)
+			for _, d := range data {
+				switch d.(type) {
+				case map[string]any:
+					wg.Add(1)
+					safe.Go(func() {
+						defer wg.Done()
+						err := <-startGenerate(d.(map[string]any), rootPath)
+						if err != nil {
+							chErr <- err
+						}
+					})
+				case string:
+					err := actions.CreateFile(rootPath, d.(string), "")
+					if err != nil {
+						chErr <- err
+					}
+				}
+			}
 		default:
 			switch v.(type) {
 			case map[string]any:
@@ -65,7 +85,6 @@ func startGenerate(conf map[string]any, rootPath string) chan error {
 				wg.Add(1)
 				safe.Go(func() {
 					defer wg.Done()
-
 					err = <-startGenerate(v.(map[string]any), path.Join(rootPath, k))
 					if err != nil {
 						chErr <- err
