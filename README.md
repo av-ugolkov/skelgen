@@ -42,6 +42,15 @@ skel:
         func main() {
             fmt.Println("Hello, YASK!")
         }
+    configs:
+      files:
+        - dev.yaml
+        - prod.yaml
+    internal:
+      dirs:
+        - app
+        - database
+        - service
     pkg:
       tools:
         tools.go: package tools
@@ -65,10 +74,17 @@ content:
 backend/
 ├── cmd/
 │ └── main.go
+├── configs
+│ ├── dev.yaml
+│ └── prod.yaml
+├── internal
+│ ├── app
+│ ├── database
+│ └── service
 ├── go.mod
 ├── pkg/
 │ └── tools/
-│ └── tools.go
+│   └── tools.go
 ├── Makefile ← included from local file
 └── README.md ← generated from content block
 ```
@@ -110,6 +126,8 @@ backend/
 | `skel`    | Defines the directory and file structure                                    |
 | `content` | Reusable content blocks (referenced by `#/path`)                            |
 | `exec`    | List of shell commands to run after generation                              |
+| `dirs`    | List of directories to create                                               |
+| `files`   | List of files to create.                                                    |
 | `$`       | Read external files and write it into the created file (`$./relative/path`) |
 | `#`       | Read content by path and write it into the created file (`#/content/path`)  |
 
