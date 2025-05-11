@@ -30,6 +30,17 @@ func CreateFile(rootPath, file string, value string) error {
 	}
 }
 
+func CreateFiles(rootPath string, files map[string]any) error {
+	for file, value := range files {
+		err := CreateFile(rootPath, file, fmt.Sprintf("%v", value))
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
 func writeString(file *os.File, content string) error {
 	_, err := file.WriteString(content)
 	if err != nil {

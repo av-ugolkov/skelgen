@@ -4,12 +4,36 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 )
 
-func CreateFolder(rootPath, folder string) error {
+func CreateFolders(rootPath, folder string) error {
+	var folders []string
+	if HasSubfolders(folder) {
+		folders = strings.Split(folder, "/")
+	} else {
+		folders = []string{folder}
+	}
+
+	for _, subFolder := range folders {
+		err := createFolder(rootPath, subFolder)
+		if err != nil {
+			return err
+		}
+		rootPath = path.Join(rootPath, subFolder)
+	}
+
+	return nil
+}
+
+func createFolder(rootPath, folder string) error {
 	err := os.Mkdir(path.Join(rootPath, folder), 0755)
 	if err != nil && !os.IsExist(err) {
 		return fmt.Errorf("couldn't create the folder [%s] by the path [%s]: %v", folder, rootPath, err)
 	}
 	return nil
+}
+
+func HasSubfolders(folder string) bool {
+	return strings.Contains(folder, "/")
 }
