@@ -7,9 +7,14 @@ import (
 	"strings"
 
 	"github.com/av-ugolkov/yask/internal/config"
+	"github.com/av-ugolkov/yask/internal/regex"
 )
 
 func CreateFile(rootPath, file string, value string) error {
+	if !regex.IsValidate(file) {
+		return fmt.Errorf("%v: [%s]", regex.ErrInvalidFileName, file)
+	}
+
 	f, err := os.Create(path.Join(rootPath, file))
 	if err != nil {
 		return fmt.Errorf("couldn't create a file [%s] in the folder [%s]: %v", file, rootPath, err)
