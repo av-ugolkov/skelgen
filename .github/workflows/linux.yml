@@ -22,6 +22,11 @@ jobs:
         with:
           go-version: ${{ matrix.go-version }}
 
+      - name: Run tests
+        if: github.event_name == 'pull_request'
+        run: |
+          go test -v ./...
+
       - name: Create output directory
         run: mkdir -p build
 
