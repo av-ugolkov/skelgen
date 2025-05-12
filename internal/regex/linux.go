@@ -2,6 +2,4 @@
 
 package regex
 
-import "regexp"
-
-var fileFolderName = regexp.MustCompile(`^[^/\x00]+$`)
+const platform = "linux"

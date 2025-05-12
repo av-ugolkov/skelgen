@@ -1,10 +1,8 @@
-//go:build windows
-
 package regex
 
 import "testing"
 
-func TestIsValidate(t *testing.T) {
+func TestIsValidateWindows(t *testing.T) {
 	type args struct {
 		s string
 	}
@@ -261,7 +259,7 @@ func TestIsValidate(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := IsValidate(tt.args.s); got != tt.want {
+			if got := windowsIsValidate(tt.args.s); got != tt.want {
 				t.Errorf("IsValidate(%q) = %v, want %v", tt.args.s, got, tt.want)
 			}
 		})

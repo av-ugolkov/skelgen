@@ -1,10 +1,8 @@
-//go:build darwin
-
 package regex
 
 import "testing"
 
-func TestIsValidate(t *testing.T) {
+func TestIsValidateMacOS(t *testing.T) {
 	type args struct {
 		s string
 	}
@@ -170,7 +168,7 @@ func TestIsValidate(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := IsValidate(tt.args.s); got != tt.want {
+			if got := macosIsValidate(tt.args.s); got != tt.want {
 				t.Errorf("IsValidate(%q) = %v, want %v", tt.args.s, got, tt.want)
 			}
 		})
