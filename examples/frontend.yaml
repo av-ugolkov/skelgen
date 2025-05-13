@@ -1,8 +1,12 @@
-frontend1:
-  exec:
-    - "npm create vite@latest . -- --template react-ts"
-    - "npm install"
-frontend2:
-  exec:
-    - "npm create vite@latest . -- --template react-ts"
-    - "npm install"
+skel:
+  frontend1:
+    exec:
+      - "npm create vite@latest . -- --template react-ts"
+      - "npm install"
+  frontend2:
+    exec:
+      - "npm create vite@latest . -- --template react-ts"
+      - "npm install"
+  test_folder:
+    ^dirs: 
+      file.txt: frontend1

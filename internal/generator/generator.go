@@ -2,7 +2,6 @@ package generator
 
 import (
 	"errors"
-	"path"
 	"sync"
 
 	"github.com/av-ugolkov/gopkg/logger"
@@ -49,7 +48,7 @@ func startGenerate(conf map[string]any, rootPath string) chan error {
 			})
 		case string(kw.Dirs):
 			for _, d := range v.([]any) {
-				err := actions.CreateFolders(rootPath, d.(string))
+				_, err := actions.CreateFolders(rootPath, d.(string))
 				if err != nil {
 					chErr <- err
 				}
@@ -77,7 +76,7 @@ func startGenerate(conf map[string]any, rootPath string) chan error {
 		default:
 			switch v.(type) {
 			case map[string]any:
-				err := actions.CreateFolders(rootPath, k)
+				createdPath, err := actions.CreateFolders(rootPath, k)
 				if err != nil {
 					chErr <- err
 					continue
@@ -85,7 +84,7 @@ func startGenerate(conf map[string]any, rootPath string) chan error {
 				wg.Add(1)
 				safe.Go(func() {
 					defer wg.Done()
-					err = <-startGenerate(v.(map[string]any), path.Join(rootPath, k))
+					err = <-startGenerate(v.(map[string]any), createdPath)
 					if err != nil {
 						chErr <- err
 					}

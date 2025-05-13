@@ -7,10 +7,13 @@ import (
 	"strings"
 
 	"github.com/av-ugolkov/yask/internal/config"
+	keywords "github.com/av-ugolkov/yask/internal/key-words"
 	"github.com/av-ugolkov/yask/internal/regex"
 )
 
 func CreateFile(rootPath, file string, value string) error {
+	file = keywords.RemoveInsulator(file)
+
 	if !regex.IsValidate(file) {
 		return fmt.Errorf("%v: [%s]", regex.ErrInvalidFileName, file)
 	}
