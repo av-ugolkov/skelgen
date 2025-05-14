@@ -1,0 +1,8 @@
+skel:
+  dynamic:
+    ${folder}:
+      README.md: 'dynamic'
+    files:
+      - ${file1}.txt: ""
+      - ${file2}
+      - Makefile: ${makefile}

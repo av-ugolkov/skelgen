@@ -1,6 +1,8 @@
 package keywords
 
-import "strings"
+import (
+	"strings"
+)
 
 type KeyWords string
 
@@ -12,8 +14,13 @@ const (
 	Link      KeyWords = "link"
 	Exec      KeyWords = "exec"
 	Insulator KeyWords = "^"
+	Dynamic   KeyWords = "$"
 )
 
 func RemoveInsulator(s string) string {
 	return strings.TrimPrefix(s, string(Insulator))
+}
+
+func IsDynamic(s string) bool {
+	return strings.HasPrefix(s, string(Dynamic))
 }

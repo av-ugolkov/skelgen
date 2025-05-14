@@ -6,12 +6,14 @@ import (
 	"path"
 	"strings"
 
-	keywords "github.com/av-ugolkov/yask/internal/key-words"
+	"github.com/av-ugolkov/yask/internal/config"
+	kw "github.com/av-ugolkov/yask/internal/key-words"
 	"github.com/av-ugolkov/yask/internal/regex"
 )
 
 func CreateFolders(rootPath, folder string) (string, error) {
-	folder = keywords.RemoveInsulator(folder)
+	folder = config.AsDynamic(folder)
+	folder = kw.RemoveInsulator(folder)
 
 	var folders []string
 	if HasSubfolders(folder) {

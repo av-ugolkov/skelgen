@@ -2,6 +2,7 @@ package config
 
 import (
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/av-ugolkov/gopkg/logger"
@@ -13,11 +14,12 @@ import (
 type config struct {
 	skel    map[string]any
 	content map[string]any
+	dynamic map[string]string
 }
 
 var inst config
 
-func Load(path string) error {
+func Load(path string, dynamic map[string]string) error {
 	f, err := os.ReadFile(path)
 	if err != nil {
 		return err
@@ -29,8 +31,14 @@ func Load(path string) error {
 		return err
 	}
 
+	dynamicM := make(map[string]string, len(dynamic))
+	for k, v := range dynamic {
+		dynamicM[k] = v
+	}
+
 	inst = config{
-		skel: mapConfig[string(kw.Skel)].(map[string]any),
+		skel:    mapConfig[string(kw.Skel)].(map[string]any),
+		dynamic: dynamicM,
 	}
 
 	mapContent := mapConfig[string(kw.Content)]
@@ -63,5 +71,41 @@ func GetContent(path string) string {
 	}
 
 	logger.Warnf("not found content by path [%s]", path)
+	return ""
+}
+
+func AsDynamic(s string) string {
+	var value string
+	if kw.IsDynamic(s) {
+		value = inst.dynamic[extractOnePlaceholder(s)]
+		if value != "" {
+			return replacePlaceholders(s, value)
+		}
+	}
+	return s
+}
+
+func replacePlaceholders(input, replaceValue string) string {
+	// Сначала обрабатываем ${{...}} — жадный поиск
+	re := regexp.MustCompile(`\$\{\{.*\}\}`)
+	input = re.ReplaceAllStringFunc(input, func(match string) string {
+		return replaceValue
+	})
+
+	// Затем обрабатываем ${...} — нежадный поиск
+	re2 := regexp.MustCompile(`\$\{[^{}]*\}`)
+	input = re2.ReplaceAllStringFunc(input, func(match string) string {
+		return replaceValue
+	})
+
+	return input
+}
+
+func extractOnePlaceholder(input string) string {
+	re := regexp.MustCompile(`\$\{([^{}]+)\}`)
+	match := re.FindStringSubmatch(input)
+	if len(match) > 1 {
+		return match[1] // значение внутри ${...}
+	}
 	return ""
 }

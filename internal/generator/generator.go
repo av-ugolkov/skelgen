@@ -11,8 +11,8 @@ import (
 	kw "github.com/av-ugolkov/yask/internal/key-words"
 )
 
-func GenSkeleton(pathFile string, instance any) error {
-	err := config.Load(pathFile)
+func GenSkeleton(pathFile string, instance any, dynamic map[string]string) error {
+	err := config.Load(pathFile, dynamic)
 	if err != nil {
 		return err
 	}
