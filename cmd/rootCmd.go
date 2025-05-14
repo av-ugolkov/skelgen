@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/av-ugolkov/gopkg/logger"
@@ -11,7 +12,7 @@ import (
 )
 
 var configPath string
-var dynamic []string
+var kv kvPairs
 
 var rootCmd = &cobra.Command{
 	Use:   "yask",
@@ -27,13 +28,13 @@ var rootCmd = &cobra.Command{
 			}
 			return
 		}
-		dynamicM := make(map[string]string, len(dynamic)/2)
-		for i := 0; i < len(dynamic); i = i + 2 {
-			dynamicM[dynamic[i]] = dynamic[i+1]
+		dynamic := make(map[string]string, len(kv))
+		for k, v := range kv {
+			dynamic[strings.TrimSpace(k)] = strings.TrimSpace(v)
 		}
 
 		var inst map[any]any
-		err := generator.GenSkeleton(configPath, inst, dynamicM)
+		err := generator.GenSkeleton(configPath, inst, dynamic)
 		if err != nil {
 			fmt.Printf("ERRORS:\n%v\n\n", err)
 		}
@@ -46,7 +47,7 @@ func Execute() {
 		fmt.Printf("time: %v\n", time.Since(startTime))
 	}()
 	rootCmd.Flags().StringVarP(&configPath, "config", "c", "", "Path to config YAML(required)")
-	rootCmd.Flags().StringSliceVarP(&dynamic, "dynamic", "d", nil, "Path to config YAML(required)")
+	rootCmd.Flags().VarP(&kv, "dynamic", "d", "Dynamics arguments in format [key] [value]")
 	err := rootCmd.Execute()
 	if err != nil {
 		logger.Errorf("%v", err)
