@@ -86,19 +86,8 @@ func AsDynamic(s string) string {
 }
 
 func replacePlaceholders(input, replaceValue string) string {
-	// Сначала обрабатываем ${{...}} — жадный поиск
-	re := regexp.MustCompile(`\$\{\{.*\}\}`)
-	input = re.ReplaceAllStringFunc(input, func(match string) string {
-		return replaceValue
-	})
-
-	// Затем обрабатываем ${...} — нежадный поиск
-	re2 := regexp.MustCompile(`\$\{[^{}]*\}`)
-	input = re2.ReplaceAllStringFunc(input, func(match string) string {
-		return replaceValue
-	})
-
-	return input
+	re := regexp.MustCompile(`\$\{\{.*?\}\}|\$\{.*?\}`)
+	return re.ReplaceAllString(input, replaceValue)
 }
 
 func extractOnePlaceholder(input string) string {
