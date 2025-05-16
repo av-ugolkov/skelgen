@@ -114,29 +114,31 @@ backend/
 
 ### 🏁 Flags:
 
-- `-c`, `--config` string — Path to config YAML (**required**)
+- `-c`, `--config string` — Path to config YAML (**required**)
 - `-h`, `--help` — Show help for yask
+- `-d`, `--dynamic key=value` — Dynamics arguments in format [key] [value]
 
 ---
 
 ## 🔑 YAML Keywords
 
-| Key       | Description                                                                 |
-| --------- | --------------------------------------------------------------------------- |
-| `skel`    | Defines the directory and file structure                                    |
-| `content` | Reusable content blocks (referenced by `#/path`)                            |
-| `exec`    | List of shell commands to run after generation                              |
-| `dirs`    | List of directories to create                                               |
-| `files`   | List of files to create.                                                    |
-| `$`       | Read external files and write it into the created file (`$./relative/path`) |
-| `#`       | Read content by path and write it into the created file (`#/content/path`)  |
+| Key       | Description                                                                       |
+| --------- | --------------------------------------------------------------------------------- |
+| `skel`    | Defines the directory and file structure                                          |
+| `content` | Reusable content blocks (referenced by `#/path`)                                  |
+| `exec`    | List of shell commands to run after generation                                    |
+| `dirs`    | List of directories to create                                                     |
+| `files`   | List of files to create.                                                          |
+| `@`       | Read external files and write them to the created file (`@./relative/path`)       |
+| `#`       | Read the contents of the path and write it to the created file (`#/content/path`) |
+| `$`       | Sets a placeholder that can be changed (`${placeholder}`)                         |
 
 ---
 
 ## 💡 Tips
 
 - Use `#/content/...` to reuse documentation blocks.
-- Use `$./path` to include local file content (like Makefiles or licenses).
+- Use `@./path` to include local file content (like Makefiles or licenses).
 - Use `exec` to automatically set up dependencies or tools.
 
 ---
