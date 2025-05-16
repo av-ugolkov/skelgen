@@ -1,0 +1,16 @@
+skel:
+  android_module:
+    src:
+      main:
+        dirs:
+          - java1
+          - java/ru/test/module
+        res:
+          drawable:
+            icon.xml: ''
+          values:
+            strings.xml: ''
+        AndroidManifest.xml: ''
+    files:
+      - build.gradle: ""
+      - AndroidManifest.xml

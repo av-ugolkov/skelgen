@@ -7,14 +7,15 @@ import (
 type KeyWords string
 
 const (
-	Skel      KeyWords = "skel"
-	Content   KeyWords = "content"
-	Dirs      KeyWords = "dirs"
-	Files     KeyWords = "files"
-	Link      KeyWords = "link"
-	Exec      KeyWords = "exec"
-	Insulator KeyWords = "^"
-	Dynamic   KeyWords = "$"
+	Skel        KeyWords = "skel"
+	Content     KeyWords = "content"
+	Dirs        KeyWords = "dirs"
+	Files       KeyWords = "files"
+	ContentLink KeyWords = "#"
+	FileLink    KeyWords = "@"
+	Exec        KeyWords = "exec"
+	Insulator   KeyWords = "^"
+	Dynamic     KeyWords = "$"
 )
 
 func RemoveInsulator(s string) string {

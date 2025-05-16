@@ -2,6 +2,7 @@ skel:
   dynamic:
     ${folder}:
       README.md: 'dynamic'
+      Makefile: '$./Makefile'
     files:
       - ${file1}.txt: ""
       - ${file2}

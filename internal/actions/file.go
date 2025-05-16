@@ -26,13 +26,13 @@ func CreateFile(rootPath, file string, value string) error {
 	}
 
 	switch {
-	case strings.HasPrefix(value, "$"):
+	case strings.HasPrefix(value, string(keywords.FileLink)):
 		content, err := os.ReadFile(value[1:])
 		if err != nil {
 			return err
 		}
 		return writeBytes(f, content)
-	case strings.HasPrefix(value, "#"):
+	case strings.HasPrefix(value, string(keywords.ContentLink)):
 		content := config.GetContent(value)
 		return writeString(f, content)
 	default:
