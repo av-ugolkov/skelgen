@@ -7,22 +7,32 @@ import (
 	"strings"
 
 	"github.com/av-ugolkov/yask/internal/config"
+	keywords "github.com/av-ugolkov/yask/internal/key-words"
+	"github.com/av-ugolkov/yask/internal/regex"
 )
 
 func CreateFile(rootPath, file string, value string) error {
+	file = config.AsDynamic(file)
+	file = keywords.RemoveInsulator(file)
+	value = config.AsDynamic(value)
+
+	if !regex.IsValidate(file) {
+		return fmt.Errorf("%v: [%s]", regex.ErrInvalidFileName, file)
+	}
+
 	f, err := os.Create(path.Join(rootPath, file))
 	if err != nil {
 		return fmt.Errorf("couldn't create a file [%s] in the folder [%s]: %v", file, rootPath, err)
 	}
 
 	switch {
-	case strings.HasPrefix(value, "$"):
+	case strings.HasPrefix(value, string(keywords.FileLink)):
 		content, err := os.ReadFile(value[1:])
 		if err != nil {
 			return err
 		}
 		return writeBytes(f, content)
-	case strings.HasPrefix(value, "#"):
+	case strings.HasPrefix(value, string(keywords.ContentLink)):
 		content := config.GetContent(value)
 		return writeString(f, content)
 	default:

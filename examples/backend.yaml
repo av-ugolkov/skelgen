@@ -25,7 +25,7 @@ skel:
     pkg:
       tools:
         tools.go: package tools
-    Makefile: '$./Makefile'
+    Makefile: '@./Makefile'
     README.md: '#/content/readme'
     exec:
       - go mod tidy
