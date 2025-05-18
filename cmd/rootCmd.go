@@ -2,9 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 	"strings"
-	"time"
 
 	"github.com/av-ugolkov/yask/internal/generator"
 )
@@ -29,6 +27,10 @@ var rootCmd = &Command{
 	},
 }
 
+func RunGenSkel(conf string, placeholders []string) {
+	rootCmd.RunCommand(nil)
+}
+
 // func Execute() {
 // 	startTime := time.Now()
 // 	defer func() {
@@ -41,33 +43,3 @@ var rootCmd = &Command{
 // 		logger.Errorf("%v", err)
 // 	}
 // }
-
-func ExecuteArgs(args []string) {
-	startTime := time.Now()
-	defer func() {
-		fmt.Printf("time: %v\n", time.Since(startTime))
-	}()
-
-	for ind, arg := range args {
-		switch arg {
-		case "-h", "--help":
-			helpCmd.RunCommand(nil)
-		case "-v", "--version":
-			versionCmd.RunCommand(nil)
-		case "-c", "--config":
-			configPath = args[ind+1]
-			for _, arg := range args[ind+2:] {
-				switch arg {
-				case "-p", "--placeholder":
-					fmt.Println("Placeholder")
-				}
-			}
-			rootCmd.RunCommand(args[ind+2:])
-		default:
-			if strings.HasPrefix(arg, "-") {
-				fmt.Printf("Unknown flag: %s\n", arg)
-				os.Exit(1)
-			}
-		}
-	}
-}
