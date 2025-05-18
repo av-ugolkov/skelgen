@@ -1,31 +1,45 @@
 package main
 
 import (
+	"fmt"
 	"os"
-)
+	"strings"
+	"time"
 
-import "github.com/av-ugolkov/yask/cmd"
+	cmd "github.com/av-ugolkov/yask/cmd"
+)
 
 func main() {
 	args := os.Args[1:]
-	cmd.ExecuteArgs(args)
+	ExecuteArgs(args)
 }
 
-/*
-Generate project structure from YAML
+func ExecuteArgs(args []string) {
+	startTime := time.Now()
+	defer func() {
+		fmt.Printf("time: %v\n", time.Since(startTime))
+	}()
 
-Usage:
-  yask [flags]
-  yask [command]
-
-Available Commands:
-  help        Help about any command
-  version     Print the version number of yask
-
-Flags:
-  -c, --config string       Path to config YAML(required)
-  -d, --dynamic key=value   Dynamics arguments in format [key] [value]
-  -h, --help                help for yask
-
-Use "yask [command] --help" for more information about a command.
-*/
+	for ind, arg := range args {
+		switch arg {
+		case "-h", "--help":
+			cmd.RunHelp()
+		case "-v", "--version":
+			cmd.RunVersion()
+		case "-c", "--config":
+			configPath := args[ind+1]
+			for _, arg := range args[ind+2:] {
+				switch arg {
+				case "-p", "--placeholder":
+					fmt.Println("Placeholder")
+				}
+			}
+			cmd.RunGenSkel(configPath, args[ind+2:])
+		default:
+			if strings.HasPrefix(arg, "-") {
+				fmt.Printf("Unknown flag: %s\n", arg)
+				os.Exit(1)
+			}
+		}
+	}
+}
