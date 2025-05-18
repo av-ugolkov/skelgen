@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	Version = "v0.1.0"
+	Version = "v0.2.0"
 )
 
 var versionCmd = &Command{
@@ -20,4 +20,8 @@ var versionCmd = &Command{
 
 func init() {
 	rootCmd.AddCommand(versionCmd)
+}
+
+func RunVersion() {
+	versionCmd.RunCommand(nil)
 }
