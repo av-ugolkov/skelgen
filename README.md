@@ -102,6 +102,10 @@ backend/
    ```bash
    yask -c=config.yaml
    ```
+   or example with placeholders
+   ```bash
+   yask -c ./config.yaml -p folder=TestFolder -p file1=about -p file2=dynamic.txt -p makefile="ls -a"
+   ```
 
 ---
 
