@@ -9,7 +9,7 @@ build-linux:
 
 .PHONY: build-mac
 build-mac:
-	CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 go build -ldflags "-s -w -X '$(PKG).Version=$(VERSION)'" -o $(BINARY) main.go
+	CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 go build -ldflags "-s -w -X '$(PKG).Version=$(VERSION)'" -o $(BINARY) main.go
 
 .PHONY: build-win
 build-win:
