@@ -47,7 +47,7 @@ func Execute() {
 		fmt.Printf("time: %v\n", time.Since(startTime))
 	}()
 	rootCmd.Flags().StringVarP(&configPath, "config", "c", "", "Path to config YAML(required)")
-	rootCmd.Flags().VarP(&kv, "dynamic", "d", "Dynamics arguments in format [key] [value]")
+	rootCmd.Flags().VarP(&kv, "placeholder", "p", "Dynamics arguments in format [key] [value]")
 	err := rootCmd.Execute()
 	if err != nil {
 		logger.Errorf("%v", err)
