@@ -32,7 +32,7 @@ jobs:
 
       - name: Cross-compile for Linux
         run: |
-          GOOS=linux GOARCH=amd64 go build -o build/yask
+          CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags "-s -w" -o build/yask
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
