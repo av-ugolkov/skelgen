@@ -12,9 +12,9 @@ import (
 )
 
 func CreateFile(rootPath, file string, value string) error {
-	file = config.AsDynamic(file)
+	file = config.AsPlaceholder(file)
 	file = keywords.RemoveInsulator(file)
-	value = config.AsDynamic(value)
+	value = config.AsPlaceholder(value)
 
 	if !regex.IsValidate(file) {
 		return fmt.Errorf("%v: [%s]", regex.ErrInvalidFileName, file)

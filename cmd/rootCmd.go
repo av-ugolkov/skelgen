@@ -28,13 +28,13 @@ var rootCmd = &cobra.Command{
 			}
 			return
 		}
-		dynamic := make(map[string]string, len(kv))
+		placeholders := make(map[string]string, len(kv))
 		for k, v := range kv {
-			dynamic[strings.TrimSpace(k)] = strings.TrimSpace(v)
+			placeholders[strings.TrimSpace(k)] = strings.TrimSpace(v)
 		}
 
 		var inst map[any]any
-		err := generator.GenSkeleton(configPath, inst, dynamic)
+		err := generator.GenSkeleton(configPath, inst, placeholders)
 		if err != nil {
 			fmt.Printf("ERRORS:\n%v\n\n", err)
 		}
