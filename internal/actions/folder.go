@@ -12,7 +12,7 @@ import (
 )
 
 func CreateFolders(rootPath, folder string) (string, error) {
-	folder = config.AsDynamic(folder)
+	folder = config.AsPlaceholder(folder)
 	folder = kw.RemoveInsulator(folder)
 
 	var folders []string

@@ -15,13 +15,9 @@ const (
 	FileLink    KeyWords = "@"
 	Exec        KeyWords = "exec"
 	Insulator   KeyWords = "^"
-	Dynamic     KeyWords = "$"
+	Placeholder KeyWords = "$"
 )
 
 func RemoveInsulator(s string) string {
 	return strings.TrimPrefix(s, string(Insulator))
-}
-
-func IsDynamic(s string) bool {
-	return strings.HasPrefix(s, string(Dynamic))
 }
