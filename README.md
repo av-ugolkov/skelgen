@@ -120,7 +120,7 @@ backend/
 
 - `-c`, `--config string` — Path to config YAML (**required**)
 - `-h`, `--help` — Show help for yask
-- `-d`, `--dynamic key=value` — Dynamics arguments in format [key] [value]
+- `-p`, `--placeholder key=value` — Dynamics arguments in format [key] [value]
 
 ---
 
@@ -144,6 +144,7 @@ backend/
 - Use `#/content/...` to reuse documentation blocks.
 - Use `@./path` to include local file content (like Makefiles or licenses).
 - Use `exec` to automatically set up dependencies or tools.
+- Use `folder_1/folder_2/.../folder_N` to create nested folder hierarchy in one line.
 
 ---
 
