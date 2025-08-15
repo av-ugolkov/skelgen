@@ -41,8 +41,13 @@ func Load(path string, ph map[string]string) error {
 		placeholders[k] = v
 	}
 
+	skel, ok := mapConfig[string(kw.Skel)].(map[string]any)
+	if !ok {
+		return errors.New("skeleton has one or several mistakes")
+	}
+
 	inst = config{
-		skel:         mapConfig[string(kw.Skel)].(map[string]any),
+		skel:         skel,
 		placeholders: placeholders,
 	}
 
