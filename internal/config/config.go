@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	"os"
 	"regexp"
 	"strings"
@@ -29,6 +30,10 @@ func Load(path string, ph map[string]string) error {
 	err = yaml.Unmarshal(f, &mapConfig)
 	if err != nil {
 		return err
+	}
+
+	if mapConfig[string(kw.Skel)] == nil {
+		return errors.New("skeleton is empty")
 	}
 
 	placeholders := make(map[string]string, len(ph))
