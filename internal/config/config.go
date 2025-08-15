@@ -1,6 +1,7 @@
 package config
 
 import (
+	"errors"
 	"os"
 	"regexp"
 	"strings"
@@ -31,13 +32,22 @@ func Load(path string, ph map[string]string) error {
 		return err
 	}
 
+	if mapConfig[string(kw.Skel)] == nil {
+		return errors.New("skeleton is empty")
+	}
+
 	placeholders := make(map[string]string, len(ph))
 	for k, v := range ph {
 		placeholders[k] = v
 	}
 
+	skel, ok := mapConfig[string(kw.Skel)].(map[string]any)
+	if !ok {
+		return errors.New("skeleton has one or several mistakes")
+	}
+
 	inst = config{
-		skel:         mapConfig[string(kw.Skel)].(map[string]any),
+		skel:         skel,
 		placeholders: placeholders,
 	}
 
