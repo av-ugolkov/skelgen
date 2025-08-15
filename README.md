@@ -120,7 +120,7 @@ backend/
 
 - `-c`, `--config string` — Path to config YAML (**required**)
 - `-h`, `--help` — Show help for yask
-- `-p`, `--placeholder key=value` — Dynamics arguments in format [key] [value]
+- `-p`, `--placeholder key=value` — Modifiable parameters that are substituted into the configuration file.
 
 ---
 
